@@ -63,3 +63,10 @@ Partitions:
     priority: 3
 
 DefaultPartition: CPU
+
+# config of local licenses
+Licenses:
+  - name: matlab
+    count: 5
+  - name: vscode
+    count: 10

@@ -99,6 +99,12 @@ struct Config {
     uint32_t WeightPartition;
     uint32_t WeightQOS;
   };
+
+  struct LocalLicense {
+    std::string license_name;
+    uint64_t total_count;
+  };
+
   Priority PriorityConfig;
 
   CraneCtldListenConf ListenConf;
@@ -115,6 +121,7 @@ struct Config {
   std::string Hostname;
   std::unordered_map<std::string, std::shared_ptr<Node>> Nodes;
   std::unordered_map<std::string, Partition> Partitions;
+  std::unordered_map<std::string, LocalLicense> LocalLicenses;
   std::string DefaultPartition;
 
   std::string DbUser;
@@ -541,6 +548,15 @@ struct User {
   std::list<std::string> coordinator_accounts;
   AdminLevel admin_level;
 };
+
+struct License {
+  enum LicenseType {Local, Remote};
+
+  std::string name;
+  uint64_t total_count;
+  uint64_t used_count;
+  uint64_t free_count;
+}
 
 }  // namespace Ctld
 

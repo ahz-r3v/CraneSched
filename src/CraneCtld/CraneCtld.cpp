@@ -366,6 +366,31 @@ void ParseConfig(int argc, char** argv) {
           std::exit(1);
         }
       }
+
+      if (config["Licenses"]) {
+        for (auto it = config["Licenses"].begin();
+             it != config["Licenses"].end(); ++it) {
+          auto license = it->as<YAML::Node>();
+          std::string lic_name;
+          Ctld::Config::LocalLicense lic;
+
+          if (license["name"] && !license["name"].IsNull()) {
+            lic_name.append(license["name"].Scalar());
+          } else {
+            CRANE_ERROR("License name not found");
+            std::exit(1);
+          }
+
+          if (license["count"]) {
+            lic.total_count = license["count"].as<uint64_t>();
+          } else {
+            lic.total_count = 0;
+          }
+
+          lic.license_name.assign(lic_name);
+          g_config.LocalLicenses.emplace(std::move(lic_name), std::move(lic));
+        }
+      }
     } catch (YAML::BadFile& e) {
       CRANE_CRITICAL("Can't open config file {}: {}", config_path, e.what());
       std::exit(1);
